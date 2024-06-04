@@ -1,0 +1,6 @@
+Flask
+celery
+redis
+aiohttp
+beautifulsoup4
+pymongo
