@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Profiles</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+    <script>
+        function updateFilter() {
+            const selectedCategories = Array.from(document.querySelectorAll('input[name="category"]:checked')).map(cb => cb.value);
+            const queryParams = selectedCategories.map(cat => `category=${cat}`).join('&');
+            window.location.search = queryParams;
+        }
+    </script>
+</head>
+<body>
+    <h1>Profile</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Płeć</th>
+                <th>Wiek</th>
+                <th>Wzrost</th>
+                <th>Waga</th>
+                <th>Preferencje seksualne</th>
+                <th>Wykształcenie</th>
+                <th>Stan cywilny</th>
+                <th>Kolor włosów</th>
+                <th>Link do ogłoszenia</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for profile in profiles %}
+            <tr>
+                <td>{{ profile['płeć'] }}</td>
+                <td>{{ profile['wiek'] }}</td>
+                <td>{{ profile['wzrost'] }}</td>
+                <td>{{ profile['waga'] }}</td>
+                <td>{{ profile['preferencje seksualne'] }}</td>
+                <td>{{ profile['wykształcenie'] }}</td>
+                <td>{{ profile['stan cywilny'] }}</td>
+                <td>{{ profile['kolor włosów'] }}</td>
+                <td><a href="{{ profile['link'] }}" target="_blank">Zobacz ogłoszenie</a></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <h1>Filtruj widok ogłoszeń według:</h1>
+    <div>
+        <label><input type="checkbox" name="category" value="nieruchomosci" {% if 'nieruchomosci' in selected_categories %}checked{% endif %} onchange="updateFilter()"> Nieruchomości</label>
+        <label><input type="checkbox" name="category" value="praca" {% if 'praca' in selected_categories %}checked{% endif %} onchange="updateFilter()"> Praca</label>
+        <label><input type="checkbox" name="category" value="motoryzacyjne" {% if 'motoryzacyjne' in selected_categories %}checked{% endif %} onchange="updateFilter()"> Motoryzacyjne</label>
+        <label><input type="checkbox" name="category" value="uslugi" {% if 'uslugi' in selected_categories %}checked{% endif %} onchange="updateFilter()"> Usługi</label>
+        <label><input type="checkbox" name="category" value="dom_i_ogrod" {% if 'dom_i_ogrod' in selected_categories %}checked{% endif %} onchange="updateFilter()"> Dom i ogród</label>
+        <label><input type="checkbox" name="category" value="elektronika" {% if 'elektronika' in selected_categories %}checked{% endif %} onchange="updateFilter()"> Elektronika</label>
+        <label><input type="checkbox" name="category" value="nauka" {% if 'nauka' in selected_categories %}checked{% endif %} onchange="updateFilter()"> Nauka</label>
+        <label><input type="checkbox" name="category" value="drobne" {% if 'drobne' in selected_categories %}checked{% endif %} onchange="updateFilter()"> Drobne</label>
+        <label><input type="checkbox" name="category" value="towarzyskie" {% if 'towarzyskie' in selected_categories %}checked{% endif %} onchange="updateFilter()"> Towarzyskie</label>
+        <label><input type="checkbox" name="category" value="ksiazki" {% if 'ksiazki' in selected_categories %}checked{% endif %} onchange="updateFilter()"> Książki</label>
+    </div>
+
+    <h1>Ogłoszenia</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Link do ogłoszenia</th>
+                <th>Zdjęcie</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for ad_link in ad_links %}
+            <tr>
+                <td><a href="{{ ad_link['link'] }}" target="_blank">{{ ad_link['link'] }}</a></td>
+                <td>
+                    {% if 'images' in ad_link %}
+                        <a href="{{ ad_link['images'][0] }}" target="_blank">
+                            <img src="{{ ad_link['images'][0] }}" alt="Ad Image" width="100">
+                        </a>
+                    {% else %}
+                        Brak zdjęć
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
